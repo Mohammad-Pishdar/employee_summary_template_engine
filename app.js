@@ -11,46 +11,70 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+let employeeList = [];
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 const questions = [{
         type: "list",
-        name: "Role",
-        message: "Please enter your role in the company",
+        name: "role",
+        message: "Please enter the employee role in the company",
         choices: ['Manager', 'Engineer', 'Intern']
     },
     {
         type: "input",
-        name: "Name",
-        message: "What is your name?"
+        name: "name",
+        message: "What is the employee name?"
     },
     {
         type: "input",
-        name: "ID",
-        message: "Enter your ID number"
+        name: "idNumber",
+        message: "Enter the employee ID number"
     },
     {
         type: "input",
-        name: "Email",
-        message: "Enter your email address"
+        name: "email",
+        message: "Enter the employee email address"
+    }
+]
+
+const managerSpecific = [{
+        type: "input",
+        name: "officeNumber",
+        message: "What is the manager's office number?"
+    },
+    {
+        type: "list",
+        name: "continueOrNot",
+        message: "Do you want to continue adding more employees?",
+        choices: ['Yes', 'No']
     }
 ];
 
-const specificQuestions = [{
+const engineerSpecific = [{
         type: "input",
-        name: "OfficeNumber",
-        message: "What is your office number?"
+        name: "github",
+        message: "What is the engineer's GitHub' ID?"
     },
     {
+        type: "list",
+        name: "continueOrNot",
+        message: "Do you want to continue adding more employees?",
+        choices: ['Yes', 'No']
+    }
+];
+
+const internSpecific = [{
         type: "input",
-        name: "GitHub",
-        message: "What is your GitHub ID?"
+        name: "school",
+        message: "Which school is the intern from?"
     },
     {
-        type: "input",
-        name: "School",
-        message: "Which school are you from?"
+        type: "list",
+        name: "continueOrNot",
+        message: "Do you want to continue adding more employees?",
+        choices: ['Yes', 'No']
     }
 ];
 
@@ -59,18 +83,50 @@ function promptUser() {
 }
 
 function promptManger() {
-    return inquirer.prompt(specificQuestions[0]);
+    return inquirer.prompt(managerSpecific);
 }
+
+function promptEngineer() {
+    return inquirer.prompt(engineerSpecific);
+}
+
+
+function promptIntern() {
+    return inquirer.prompt(internSpecific);
+}
+
 async function init() {
     try {
         const answers = await promptUser();
-        console.log(answers);
-        if (answers.Role === "Manager") {
+
+        if (answers.role === "Manager") {
             const specificAnswer = await promptManger();
-            console.log(specificAnswer);
-
+            employeeList.push(new Manager(answers.name, answers.idNumber, answers.email, specificAnswer.officeNumber));
+            console.log(employeeList);
+            if (specificAnswer.continueOrNot === "Yes") {
+                init()
+            } else {
+                return;
+            }
+        } else if (answers.role === "Engineer") {
+            const specificAnswer = await promptEngineer();
+            employeeList.push(new Engineer(answers.name, answers.idNumber, answers.email, specificAnswer.github));
+            console.log(employeeList);
+            if (specificAnswer.continueOrNot === "Yes") {
+                init()
+            } else {
+                return;
+            }
+        } else {
+            const specificAnswer = await promptIntern();
+            employeeList.push(new Intern(answers.name, answers.idNumber, answers.email, specificAnswer.school));
+            console.log(employeeList);
+            if (specificAnswer.continueOrNot === "Yes") {
+                init()
+            } else {
+                return;
+            }
         }
-
     } catch (err) {
         console.log(err);
     }
