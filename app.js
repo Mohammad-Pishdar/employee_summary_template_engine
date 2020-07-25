@@ -82,7 +82,8 @@ const managerSpecific = [{
 const engineerSpecific = [{
         type: "input",
         name: "github",
-        message: "What is the engineer's GitHub' ID?"
+        message: "What is the engineer's GitHub' ID?",
+        validate: number => /^\d+$/.test(number)
     },
     {
         type: "list",
@@ -95,7 +96,9 @@ const engineerSpecific = [{
 const internSpecific = [{
         type: "input",
         name: "school",
-        message: "Which school is the intern from?"
+        message: "Which school is the intern from?",
+        //For the school name I let the user to enter any combination of letters and numbers
+        validate: schoolName => /[a-z1-9]/gi.test(schoolName)
     },
     {
         type: "list",
