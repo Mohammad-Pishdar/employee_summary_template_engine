@@ -42,7 +42,8 @@ const generalQuestions = [{
     {
         type: "input",
         name: "email",
-        message: "Enter the employee email address"
+        message: "Enter the employee email address",
+        validate: email => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
     }
 ]
 
@@ -61,12 +62,14 @@ const managerSpecific = [{
     {
         type: "input",
         name: "email",
-        message: "Enter your email address"
+        message: "Enter your email address",
+        validate: email => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
     },
     {
         type: "input",
         name: "officeNumber",
-        message: "What is the office number under your management?"
+        message: "What is the office number under your management?",
+        validate: number => /^\d+$/.test(number)
     },
     {
         type: "list",
