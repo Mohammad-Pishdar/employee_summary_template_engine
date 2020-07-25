@@ -27,6 +27,23 @@ let employeeList = [];
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
 
+const generalQuestions = [{
+        type: "input",
+        name: "name",
+        message: "What is the employee name?"
+    },
+    {
+        type: "input",
+        name: "idNumber",
+        message: "Enter the employee ID number"
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "Enter the employee email address"
+    }
+]
+
 const managerSpecific = [{
         type: "input",
         name: "name",
@@ -35,7 +52,7 @@ const managerSpecific = [{
     {
         type: "input",
         name: "idNumber",
-        message: "Enter the your ID number"
+        message: "Enter your ID number"
     },
     {
         type: "input",
@@ -57,21 +74,6 @@ const managerSpecific = [{
 
 const engineerSpecific = [{
         type: "input",
-        name: "name",
-        message: "What is the employee name?"
-    },
-    {
-        type: "input",
-        name: "idNumber",
-        message: "Enter the employee ID number"
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "Enter the employee email address"
-    },
-    {
-        type: "input",
         name: "github",
         message: "What is the engineer's GitHub' ID?"
     },
@@ -84,21 +86,6 @@ const engineerSpecific = [{
 ]
 
 const internSpecific = [{
-        type: "input",
-        name: "name",
-        message: "What is the employee name?"
-    },
-    {
-        type: "input",
-        name: "idNumber",
-        message: "Enter the employee ID number"
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "Enter the employee email address"
-    },
-    {
         type: "input",
         name: "school",
         message: "Which school is the intern from?"
@@ -118,6 +105,10 @@ const employeeAddQuestion = [{
     choices: ['Engineer', 'Intern']
 }]
 
+function askGenralQuestions() {
+    return inquirer.prompt(generalQuestions);
+}
+
 function promptManger() {
     return inquirer.prompt(managerSpecific);
 }
@@ -127,8 +118,9 @@ function promptEngineer() {
 }
 
 async function addEngineer() {
+    const generalAnswers = await askGenralQuestions()
     const specificAnswer = await promptEngineer();
-    employeeList.push(new Engineer(specificAnswer.name, specificAnswer.idNumber, specificAnswer.email, specificAnswer.github));
+    employeeList.push(new Engineer(generalAnswers.name, generalAnswers.idNumber, generalAnswers.email, specificAnswer.github));
     console.log(employeeList);
     if (specificAnswer.continueOrNot === "Yes") {
         const employeeRole = await prmotToAddNewRoles();
@@ -147,8 +139,9 @@ function promptIntern() {
 }
 
 async function addIntern() {
+    const generalAnswers = await askGenralQuestions()
     const specificAnswer = await promptIntern();
-    employeeList.push(new Intern(specificAnswer.name, specificAnswer.idNumber, specificAnswer.email, specificAnswer.school));
+    employeeList.push(new Intern(generalAnswers.name, generalAnswers.idNumber, generalAnswers.email, specificAnswer.school));
     console.log(employeeList);
     if (specificAnswer.continueOrNot === "Yes") {
         const employeeRole = await prmotToAddNewRoles();
