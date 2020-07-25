@@ -126,6 +126,8 @@ async function addEngineer() {
         } else {
             addIntern();
         }
+    } else {
+        outputHTML();
     }
 }
 
@@ -144,11 +146,21 @@ async function addIntern() {
         } else {
             addEngineer();
         }
+    } else {
+        outputHTML();
     }
 }
 
 async function prmotToAddNewRoles() {
     return inquirer.prompt(employeeAddQuestion);
+}
+
+function outputHTML() {
+    const returnedHTML = render(employeeList);
+    fs.writeFile(outputPath, returnedHTML, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+    });
 }
 
 async function init() {
@@ -168,6 +180,7 @@ async function init() {
 }
 
 init();
+
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
