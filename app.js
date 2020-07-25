@@ -16,13 +16,35 @@ let employeeList = [];
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-const questions = [{
-        type: "list",
-        name: "role",
-        message: "Please enter the employee role in the company",
-        choices: ['Manager', 'Engineer', 'Intern']
+const managerSpecific = [{
+        type: "input",
+        name: "name",
+        message: "What is your name?"
     },
     {
+        type: "input",
+        name: "idNumber",
+        message: "Enter the your ID number"
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "Enter your email address"
+    },
+    {
+        type: "input",
+        name: "officeNumber",
+        message: "What is the office number under your management?"
+    },
+    {
+        type: "list",
+        name: "role",
+        message: "You can now add your employees information.\n Please enter the employee role in your office",
+        choices: ['Engineer', 'Intern']
+    }
+];
+
+const engineerSpecific = [{
         type: "input",
         name: "name",
         message: "What is the employee name?"
@@ -36,23 +58,8 @@ const questions = [{
         type: "input",
         name: "email",
         message: "Enter the employee email address"
-    }
-]
-
-const managerSpecific = [{
-        type: "input",
-        name: "officeNumber",
-        message: "What is the manager's office number?"
     },
     {
-        type: "list",
-        name: "continueOrNot",
-        message: "Do you want to continue adding more employees?",
-        choices: ['Yes', 'No']
-    }
-];
-
-const engineerSpecific = [{
         type: "input",
         name: "github",
         message: "What is the engineer's GitHub' ID?"
@@ -63,9 +70,24 @@ const engineerSpecific = [{
         message: "Do you want to continue adding more employees?",
         choices: ['Yes', 'No']
     }
-];
+]
 
 const internSpecific = [{
+        type: "input",
+        name: "name",
+        message: "What is the employee name?"
+    },
+    {
+        type: "input",
+        name: "idNumber",
+        message: "Enter the employee ID number"
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "Enter the employee email address"
+    },
+    {
         type: "input",
         name: "school",
         message: "Which school is the intern from?"
@@ -76,11 +98,14 @@ const internSpecific = [{
         message: "Do you want to continue adding more employees?",
         choices: ['Yes', 'No']
     }
-];
+]
 
-function promptUser() {
-    return inquirer.prompt(questions);
-}
+const employeeAddQuestion = [{
+    type: "list",
+    name: "role",
+    message: "Please enter the employee role in your office",
+    choices: ['Engineer', 'Intern']
+}]
 
 function promptManger() {
     return inquirer.prompt(managerSpecific);
@@ -90,43 +115,53 @@ function promptEngineer() {
     return inquirer.prompt(engineerSpecific);
 }
 
+async function addEngineer() {
+    const specificAnswer = await promptEngineer();
+    employeeList.push(new Engineer(specificAnswer.name, specificAnswer.idNumber, specificAnswer.email, specificAnswer.github));
+    console.log(employeeList);
+    if (specificAnswer.continueOrNot === "Yes") {
+        const employeeRole = await prmotToAddNewRoles();
+        if (employeeRole.role === "Engineer") {
+            addEngineer();
+        } else {
+            addIntern();
+        }
+    }
+}
 
 function promptIntern() {
     return inquirer.prompt(internSpecific);
 }
 
+async function addIntern() {
+    const specificAnswer = await promptIntern();
+    employeeList.push(new Intern(specificAnswer.name, specificAnswer.idNumber, specificAnswer.email, specificAnswer.school));
+    console.log(employeeList);
+    if (specificAnswer.continueOrNot === "Yes") {
+        const employeeRole = await prmotToAddNewRoles();
+        if (employeeRole.role === "Intern") {
+            addIntern();
+        } else {
+            addEngineer();
+        }
+    }
+}
+
+async function prmotToAddNewRoles() {
+    return inquirer.prompt(employeeAddQuestion);
+}
+
 async function init() {
     try {
-        const answers = await promptUser();
-
-        if (answers.role === "Manager") {
-            const specificAnswer = await promptManger();
-            employeeList.push(new Manager(answers.name, answers.idNumber, answers.email, specificAnswer.officeNumber));
-            console.log(employeeList);
-            if (specificAnswer.continueOrNot === "Yes") {
-                init()
-            } else {
-                return;
-            }
-        } else if (answers.role === "Engineer") {
-            const specificAnswer = await promptEngineer();
-            employeeList.push(new Engineer(answers.name, answers.idNumber, answers.email, specificAnswer.github));
-            console.log(employeeList);
-            if (specificAnswer.continueOrNot === "Yes") {
-                init()
-            } else {
-                return;
-            }
+        const specificAnswer = await promptManger();
+        employeeList.push(new Manager(specificAnswer.name, specificAnswer.idNumber, specificAnswer.email, specificAnswer.officeNumber));
+        console.log(employeeList);
+        if (specificAnswer.role === "Engineer") {
+            addEngineer()
         } else {
-            const specificAnswer = await promptIntern();
-            employeeList.push(new Intern(answers.name, answers.idNumber, answers.email, specificAnswer.school));
-            console.log(employeeList);
-            if (specificAnswer.continueOrNot === "Yes") {
-                init()
-            } else {
-                return;
-            }
+            addIntern();
         }
+
     } catch (err) {
         console.log(err);
     }
