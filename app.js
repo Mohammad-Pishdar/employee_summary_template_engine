@@ -31,7 +31,7 @@ const generalQuestions = [{
         type: "input",
         name: "name",
         message: "What is the employee name?",
-        validate: name => /^[a-zA-Z]+$/.test(name)
+        validate: name => /^[a-zA-Z ]+$/.test(name)
     },
     {
         type: "input",
@@ -51,7 +51,7 @@ const managerSpecific = [{
         type: "input",
         name: "name",
         message: "What is your name?",
-        validate: name => /^[a-zA-Z]+$/.test(name)
+        validate: name => /^[a-zA-Z ]+$/.test(name)
     },
     {
         type: "input",
@@ -97,7 +97,7 @@ const internSpecific = [{
         name: "school",
         message: "Which school is the intern from?",
         //For the school name I let the user to enter any combination of letters and numbers
-        validate: schoolName => /[a-z1-9]/gi.test(schoolName)
+        validate: schoolName => /[a-z1-9 ]/gi.test(schoolName)
     },
     {
         type: "list",
@@ -129,7 +129,7 @@ function promptEngineer() {
 async function addEngineer() {
     const generalAnswers = await askGenralQuestions()
     const specificAnswer = await promptEngineer();
-    employeeList.push(new Engineer(generalAnswers.name, generalAnswers.idNumber, generalAnswers.email, specificAnswer.github));
+    employeeList.push(new Engineer(makeFirstLetterUppercase(generalAnswers.name), generalAnswers.idNumber, generalAnswers.email, specificAnswer.github));
 
     if (specificAnswer.continueOrNot === "Yes") {
         const employeeRole = await prmotToAddNewRoles();
@@ -150,7 +150,7 @@ function promptIntern() {
 async function addIntern() {
     const generalAnswers = await askGenralQuestions()
     const specificAnswer = await promptIntern();
-    employeeList.push(new Intern(generalAnswers.name, generalAnswers.idNumber, generalAnswers.email, specificAnswer.school));
+    employeeList.push(new Intern(makeFirstLetterUppercase(generalAnswers.name), generalAnswers.idNumber, generalAnswers.email, makeFirstLetterUppercase(specificAnswer.school)));
 
     if (specificAnswer.continueOrNot === "Yes") {
         const employeeRole = await prmotToAddNewRoles();
@@ -164,9 +164,17 @@ async function addIntern() {
     }
 }
 
-async function prmotToAddNewRoles() {
+function prmotToAddNewRoles() {
     return inquirer.prompt(employeeAddQuestion);
 }
+
+const makeFirstLetterUppercase = (input) => {
+    return input
+        .toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+};
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
@@ -189,7 +197,7 @@ function outputHTML() {
 async function init() {
     try {
         const specificAnswer = await promptManger();
-        employeeList.push(new Manager(specificAnswer.name, specificAnswer.idNumber, specificAnswer.email, specificAnswer.officeNumber));
+        employeeList.push(new Manager(makeFirstLetterUppercase(specificAnswer.name), specificAnswer.idNumber, specificAnswer.email, specificAnswer.officeNumber));
 
         if (specificAnswer.role === "Engineer") {
             addEngineer()
