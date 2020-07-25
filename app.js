@@ -31,12 +31,13 @@ const generalQuestions = [{
         type: "input",
         name: "name",
         message: "What is the employee name?",
-        validate: str => /^[a-zA-Z]+$/.test(str)
+        validate: name => /^[a-zA-Z]+$/.test(name)
     },
     {
         type: "input",
         name: "idNumber",
-        message: "Enter the employee ID number"
+        message: "Enter the employee ID number",
+        validate: number => /^\d+$/.test(number)
     },
     {
         type: "input",
@@ -49,12 +50,13 @@ const managerSpecific = [{
         type: "input",
         name: "name",
         message: "What is your name?",
-        validate: str => /^[a-zA-Z]+$/.test(str)
+        validate: name => /^[a-zA-Z]+$/.test(name)
     },
     {
         type: "input",
         name: "idNumber",
-        message: "Enter your ID number"
+        message: "Enter your ID number",
+        validate: number => /^\d+$/.test(number)
     },
     {
         type: "input",
