@@ -30,7 +30,8 @@ let employeeList = [];
 const generalQuestions = [{
         type: "input",
         name: "name",
-        message: "What is the employee name?"
+        message: "What is the employee name?",
+        validate: str => /^[a-zA-Z]+$/.test(str)
     },
     {
         type: "input",
@@ -47,7 +48,8 @@ const generalQuestions = [{
 const managerSpecific = [{
         type: "input",
         name: "name",
-        message: "What is your name?"
+        message: "What is your name?",
+        validate: str => /^[a-zA-Z]+$/.test(str)
     },
     {
         type: "input",
