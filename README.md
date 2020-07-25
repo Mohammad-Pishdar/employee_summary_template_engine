@@ -1,6 +1,6 @@
 # Employee Summary Template Engine
 
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Mohammad-Pishdar/employee_summary_template_engine/blob/master/LICENSE)
 
   ## Description
   One of the most important aspects of programming is writing code that is readable, reliable, and maintainable. Oftentimes, how we design our code is just as important as the code itself. The idea here is to build a Node CLI that takes in information about employees and generates an HTML webpage that displays summaries for each person.
