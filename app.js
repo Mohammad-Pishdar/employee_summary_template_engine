@@ -82,8 +82,7 @@ const managerSpecific = [{
 const engineerSpecific = [{
         type: "input",
         name: "github",
-        message: "What is the engineer's GitHub' ID?",
-        validate: number => /^\d+$/.test(number)
+        message: "What is the engineer's GitHub' ID?"
     },
     {
         type: "list",
@@ -131,7 +130,7 @@ async function addEngineer() {
     const generalAnswers = await askGenralQuestions()
     const specificAnswer = await promptEngineer();
     employeeList.push(new Engineer(generalAnswers.name, generalAnswers.idNumber, generalAnswers.email, specificAnswer.github));
-    console.log(employeeList);
+
     if (specificAnswer.continueOrNot === "Yes") {
         const employeeRole = await prmotToAddNewRoles();
         if (employeeRole.role === "Engineer") {
@@ -152,7 +151,7 @@ async function addIntern() {
     const generalAnswers = await askGenralQuestions()
     const specificAnswer = await promptIntern();
     employeeList.push(new Intern(generalAnswers.name, generalAnswers.idNumber, generalAnswers.email, specificAnswer.school));
-    console.log(employeeList);
+
     if (specificAnswer.continueOrNot === "Yes") {
         const employeeRole = await prmotToAddNewRoles();
         if (employeeRole.role === "Intern") {
@@ -183,7 +182,7 @@ function outputHTML() {
     const returnedHTML = render(employeeList);
     fs.writeFile(outputPath, returnedHTML, function (err) {
         if (err) throw err;
-        console.log('Saved!');
+        console.log('Your HTML file is ready. Check your output folder please.');
     });
 }
 
@@ -191,7 +190,7 @@ async function init() {
     try {
         const specificAnswer = await promptManger();
         employeeList.push(new Manager(specificAnswer.name, specificAnswer.idNumber, specificAnswer.email, specificAnswer.officeNumber));
-        console.log(employeeList);
+
         if (specificAnswer.role === "Engineer") {
             addEngineer()
         } else {
