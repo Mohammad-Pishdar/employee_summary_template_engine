@@ -22,8 +22,8 @@
   ## Usage
 
   This app is a software engineering team generator command line application. The application will prompt the user(manager) for information about the team manager(themselves) and then information about the team members. The user can input any number of team members, and they may be a mix of engineers and interns. When the user has completed building the team, the application will create an HTML file that displays a nicely formatted team roster based on the information provided by the user. You can watch a video walkthrough of how this application works [here](https://drive.google.com/file/d/1ZXwV1RQseJ2WDnkgZIMC3H5-tgHsmTZ8/view). Here are also some screenshots of the app:
-  ![node terminal] (https://github.com/Mohammad-Pishdar/employee_summary_template_engine/blob/master/readmeImages/employeetemplate1.jpg)
-  ![generated html page] (https://github.com/Mohammad-Pishdar/employee_summary_template_engine/blob/master/readmeImages/employeetemplate2.jpg)
+  [node terminal]! (https://github.com/Mohammad-Pishdar/employee_summary_template_engine/blob/master/readmeImages/employeetemplate1.jpg)
+  [generated html page]! (https://github.com/Mohammad-Pishdar/employee_summary_template_engine/blob/master/readmeImages/employeetemplate2.jpg)
 
   ## License
 
